@@ -58,23 +58,10 @@ public class checkpoint_spawner : MonoBehaviour
     {
         // Calculate spawn X ahead of player
         float spawnX = player.position.x + aheadOffset;
-        Vector3 leftPos  = new Vector3(spawnX, 0f, -zOffset);
-        Vector3 rightPos = new Vector3(spawnX, 0f,  zOffset);
+        Vector3 leftPos  = new Vector3(spawnX, 1f, -zOffset);
+        Vector3 rightPos = new Vector3(spawnX, 1f,  zOffset);
 
         Instantiate(gatePrefab, leftPos,  Quaternion.identity);
         Instantiate(gatePrefab, rightPos, Quaternion.identity);
-    }
-}
-
-/// <summary>
-/// Gate script: destroys itself when the player triggers its collider.
-/// </summary>
-[RequireComponent(typeof(Collider))]
-public class Gate : MonoBehaviour
-{
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-            Destroy(gameObject);
     }
 }
