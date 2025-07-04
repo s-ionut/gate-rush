@@ -1,0 +1,32 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Oo]bj/
+[Mm]emoryCaptures/
+sysinfo.txt
+
+# IDE settings
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.suo
+
+# OS and Misc
+.DS_Store
+Thumbs.db
+
+# Unity auto-generated
+*.pidb
+*.booproj
+
+# Crash and log files
+*.log
+
+# Addressable asset cache
+Assets/AddressableAssetsData/*/*.bin*
+Assets/AddressableAssetsData/*/*.link
