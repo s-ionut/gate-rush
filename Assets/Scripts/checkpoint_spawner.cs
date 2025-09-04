@@ -61,7 +61,18 @@ public class checkpoint_spawner : MonoBehaviour
         Vector3 leftPos  = new Vector3(spawnX, 1f, -zOffset);
         Vector3 rightPos = new Vector3(spawnX, 1f,  zOffset);
 
-        Instantiate(gatePrefab, leftPos,  Quaternion.identity);
-        Instantiate(gatePrefab, rightPos, Quaternion.identity);
+        // Create both gates
+        GameObject leftGate = Instantiate(gatePrefab, leftPos,  Quaternion.identity);
+        GameObject rightGate = Instantiate(gatePrefab, rightPos, Quaternion.identity);
+
+        // Link the gates together so they can destroy each other
+        gate leftGateScript = leftGate.GetComponent<gate>();
+        gate rightGateScript = rightGate.GetComponent<gate>();
+        
+        if (leftGateScript != null && rightGateScript != null)
+        {
+            leftGateScript.SetOtherGate(rightGate);
+            rightGateScript.SetOtherGate(leftGate);
+        }
     }
 }
