@@ -48,4 +48,17 @@ public class camera_follow : MonoBehaviour
             transform.rotation = Quaternion.Euler(tiltAngle, yaw, 0f);
         }
     }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+        if (target != null)
+        {
+            Debug.Log("Camera target set successfully");
+        }
+        else
+        {
+            Debug.LogWarning("Camera target set to null");
+        }
+    }
 }

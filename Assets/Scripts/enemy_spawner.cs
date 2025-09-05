@@ -106,4 +106,13 @@ public class enemy_spawner : MonoBehaviour
         lastSpawnX = 0f;
         hasFirstGateSpawned = false;
     }
+
+    public void SetPlayer(Transform newPlayer)
+    {
+        player = newPlayer;
+        if (player != null)
+        {
+            lastSpawnX = player.position.x;
+        }
+    }
 }

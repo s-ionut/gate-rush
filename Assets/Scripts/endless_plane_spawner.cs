@@ -73,4 +73,35 @@ public class endless_plane_spawner : MonoBehaviour
 
         nextSpawnX += segmentLength;
     }
+
+    public void ResetSpawner()
+    {
+        // Destroy all existing segments
+        foreach (GameObject segment in segmentPool)
+        {
+            if (segment != null)
+            {
+                Destroy(segment);
+            }
+        }
+        segmentPool.Clear();
+
+        // Reset spawn position
+        if (player != null)
+        {
+            nextSpawnX = player.position.x;
+        }
+        else
+        {
+            nextSpawnX = 0f;
+        }
+
+        // Spawn initial segments again
+        for (int i = 0; i < segmentCount; i++)
+        {
+            SpawnSegment();
+        }
+
+        Debug.Log("Endless plane spawner reset");
+    }
 }

@@ -75,4 +75,13 @@ public class checkpoint_spawner : MonoBehaviour
             rightGateScript.SetOtherGate(leftGate);
         }
     }
+
+    public void SetPlayer(Transform newPlayer)
+    {
+        player = newPlayer;
+        if (player != null)
+        {
+            lastSpawnX = player.position.x;
+        }
+    }
 }

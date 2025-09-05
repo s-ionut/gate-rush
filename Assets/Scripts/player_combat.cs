@@ -29,11 +29,27 @@ public class player_combat : MonoBehaviour
     private float lastAttackTime = 0f;
     private player_movement playerMovement;
     private powerup_manager powerUpManager;
+    private player_health playerHealth;
 
     void Start()
     {
         playerMovement = GetComponent<player_movement>();
         powerUpManager = GetComponent<powerup_manager>();
+        playerHealth = GetComponent<player_health>();
+        
+        // Debug player components
+        Debug.Log($"Player Combat Start - Movement: {playerMovement != null}, PowerUp: {powerUpManager != null}, Health: {playerHealth != null}");
+        
+        // Check if player has collider
+        Collider col = GetComponent<Collider>();
+        if (col == null)
+        {
+            Debug.LogError("Player needs a Collider component for arrow collision detection!");
+        }
+        else
+        {
+            Debug.Log($"Player has collider: {col.GetType().Name}, isTrigger: {col.isTrigger}");
+        }
         
         // Set initial damage
         currentDamage = baseDamage;
@@ -100,6 +116,9 @@ public class player_combat : MonoBehaviour
         // Create arrow at spawn point
         GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, Quaternion.identity);
         
+        // Tag the arrow as PlayerArrow
+        arrow.tag = "PlayerArrow";
+        
         // Set arrow properties
         arrow_script arrowScript = arrow.GetComponent<arrow_script>();
         if (arrowScript != null)
@@ -143,4 +162,6 @@ public class player_combat : MonoBehaviour
     {
         return attackSpeed;
     }
+
+    // Removed OnTriggerEnter - arrow_script.cs handles arrow collisions
 }

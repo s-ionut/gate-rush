@@ -45,7 +45,7 @@ public class arrow_script : MonoBehaviour
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
         
-        // Check if we're close to the target enemy
+        // Check if we're close to the target
         if (target != null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
@@ -57,8 +57,21 @@ public class arrow_script : MonoBehaviour
             // Manual collision check as backup
             if (distanceToTarget < 0.5f) // If very close, manually trigger hit
             {
-                Debug.Log("Arrow manually hitting enemy due to close distance");
-                HitEnemy(target);
+                Debug.Log("Arrow manually hitting target due to close distance");
+                
+                // Check what type of target this is
+                if (target.CompareTag("Enemy"))
+                {
+                    HitEnemy(target);
+                }
+                else if (target.CompareTag("Player"))
+                {
+                    HitPlayer(target);
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown target type: {target.tag}");
+                }
             }
         }
         
@@ -107,12 +120,23 @@ public class arrow_script : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Arrow OnTriggerEnter with: {other.name}, tag: {other.tag}");
+        Debug.Log($"Arrow OnTriggerEnter with: {other.name}, tag: {other.tag}, Arrow tag: {gameObject.tag}");
         
-        // Check if arrow hit an enemy
-        if (other.CompareTag("Enemy"))
+        // Check if this is a player arrow hitting an enemy
+        if (gameObject.CompareTag("PlayerArrow") && other.CompareTag("Enemy"))
         {
             HitEnemy(other.gameObject);
+        }
+        // Check if this is an enemy arrow hitting the player
+        else if (gameObject.CompareTag("EnemyArrow") && other.CompareTag("Player"))
+        {
+            HitPlayer(other.gameObject);
+        }
+        // Prevent player arrows from hitting the player
+        else if (gameObject.CompareTag("PlayerArrow") && other.CompareTag("Player"))
+        {
+            Debug.LogWarning("Player arrow hit the player - this shouldn't happen! Destroying arrow.");
+            Destroy(gameObject);
         }
         else
         {
@@ -138,6 +162,30 @@ public class arrow_script : MonoBehaviour
         
         // Destroy arrow
         Debug.Log("Arrow destroyed after hitting enemy");
+        Destroy(gameObject);
+    }
+
+    void HitPlayer(GameObject player)
+    {
+        Debug.Log($"=== HIT PLAYER METHOD CALLED ===");
+        Debug.Log($"Arrow hit player: {player.name}");
+        Debug.Log($"Arrow damage: {damage}");
+        
+        // Deal damage to player
+        player_health playerHealth = player.GetComponent<player_health>();
+        if (playerHealth != null)
+        {
+            Debug.Log($"Player health component found, calling TakeDamage({damage})");
+            playerHealth.TakeDamage(damage);
+            Debug.Log($"Arrow dealt {damage} damage to player");
+        }
+        else
+        {
+            Debug.LogError($"Player {player.name} doesn't have player_health component!");
+        }
+        
+        // Destroy arrow
+        Debug.Log("Arrow destroyed after hitting player");
         Destroy(gameObject);
     }
 }
